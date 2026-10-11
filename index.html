@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21天体态重塑训练计划</title>
+<style>
+:root{
+  --ink:#22262e; --sub:#6b7280; --bg:#f5f6fa; --card:#fff; --line:#eceef3;
+  --accent:#e5546f;
+  --relax:#fdeef1; --stretch:#fbe2e7; --breath:#f9d4dd; --joint:#f7c8d2; --act:#f5aebc;
+  --tipbg:#eef2f9; --tipline:#dde4f0; --green:#1fa971;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,#23262f 0%,#3a3140 55%,#54323f 100%);color:#fff;padding:56px 20px 46px}
+.hero-in{max-width:900px;margin:0 auto}
+.kicker{font-size:12px;letter-spacing:3px;color:#f2a9bb;font-weight:700;margin-bottom:10px}
+.hero h1{font-size:34px;font-weight:800;letter-spacing:1px}
+.hero-sub{margin-top:10px;color:#cfd2dc;font-size:15px}
+.stats{display:flex;gap:34px;margin-top:24px;flex-wrap:wrap}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-size:30px;font-weight:800;color:#f2a9bb;line-height:1.1}
+.stats span{font-size:12px;color:#aab0bd}
+.equip-line{margin-top:20px;font-size:13px;color:#c3c7d1;background:rgba(255,255,255,.08);display:inline-block;padding:8px 14px;border-radius:999px}
+
+/* ===== Sticky nav ===== */
+.navbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.nav-in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+.progress-wrap{display:flex;align-items:center;gap:10px;font-size:13px}
+.progress{flex:1;height:8px;background:#eceef3;border-radius:99px;overflow:hidden}
+#bar{height:100%;width:0;background:linear-gradient(90deg,#e5546f,#f2a9bb);border-radius:99px;transition:width .3s}
+#pcount{font-weight:700;color:var(--accent);min-width:44px;text-align:right}
+button{cursor:pointer;border:none;font-family:inherit}
+#continueBtn{background:var(--accent);color:#fff;padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700}
+#continueBtn:hover{filter:brightness(1.08)}
+#resetBtn{background:none;color:var(--sub);font-size:12px;text-decoration:underline}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.days::-webkit-scrollbar{height:4px}
+.days::-webkit-scrollbar-thumb{background:#d9dce4;border-radius:99px}
+.dpill{flex:0 0 auto;width:34px;height:30px;border-radius:8px;background:#f1f2f7;color:#555c68;font-size:13px;font-weight:700;border:1px solid transparent}
+.dpill.active{background:var(--ink);color:#fff}
+.dpill.done{border-color:var(--green);color:var(--green)}
+.dpill.done.active{background:var(--ink);color:#fff}
+
+/* ===== Legend ===== */
+.wrap{max-width:900px;margin:0 auto;padding:26px 16px 60px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:26px;font-size:13px;color:#3c4250}
+.lg{display:flex;align-items:center;gap:7px}
+.lg i{width:16px;height:16px;border-radius:5px;display:inline-block}
+
+/* ===== Week headers ===== */
+.week-head{margin:34px 0 14px;display:flex;align-items:center;gap:12px}
+.week-head h2{font-size:20px;font-weight:800}
+.week-head span{font-size:12px;color:#fff;background:var(--accent);padding:3px 10px;border-radius:99px;font-weight:700}
+.week-head small{color:var(--sub);font-size:13px}
+
+/* ===== Cards ===== */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(30,35,50,.04);scroll-margin-top:130px;transition:box-shadow .2s, opacity .2s}
+.card:hover{box-shadow:0 6px 18px rgba(30,35,50,.08)}
+.card.done{opacity:.72}
+.card.done .dbadge{background:var(--green)}
+.card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dbadge{background:#1c1f26;color:#fff;font-weight:800;font-size:13px;padding:5px 12px;border-radius:9px;letter-spacing:.5px}
+.card-head h3{font-size:18px;font-weight:800;flex:1}
+.done-btn{background:#f1f2f7;color:#555c68;border-radius:99px;padding:5px 14px;font-size:13px;font-weight:700}
+.card.done .done-btn{background:#e3f6ee;color:var(--green)}
+.equip{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+.eq{font-size:12px;color:#7a5a63;background:#fdf3f5;border:1px solid #f3dbe1;padding:3px 10px;border-radius:99px}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:10px 14px;border-radius:12px;align-items:start}
+.r-relax{background:var(--relax)} .r-stretch{background:var(--stretch)} .r-breath{background:var(--breath)}
+.r-joint{background:var(--joint)} .r-act{background:var(--act)}
+.cat{font-weight:800;font-size:13.5px;color:#8a3a4b;line-height:1.35}
+.cat small{display:block;font-weight:500;font-size:11px;color:#a05a68}
+.items{display:flex;flex-wrap:wrap;gap:5px}
+.it{background:#fff;border:1px solid rgba(0,0,0,.05);padding:3px 11px;border-radius:999px;font-size:13px;color:#333944}
+.tip{display:flex;gap:9px;align-items:flex-start;background:var(--tipbg);border:1px solid var(--tipline);border-radius:12px;padding:10px 14px;margin-top:12px;font-size:13.5px;color:#414b63}
+.tip b{color:#2c3a5e;white-space:nowrap}
+
+footer{max-width:900px;margin:0 auto;padding:0 16px 50px;color:var(--sub);font-size:12px;text-align:center}
+
+@media (max-width:560px){
+  .row{grid-template-columns:1fr;gap:6px}
+  .hero h1{font-size:26px}
+  .stats{gap:22px}
+}
+@media print{
+  .navbar,.done-btn{display:none}
+  body{background:#fff}
+  .card{break-inside:avoid;box-shadow:none}
+  .hero{background:#333;color:#fff}
+}
+</style>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="体态21">
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="kicker">POSTURE RESET · 21-DAY PROGRAM</div>
+    <h1>21天体态重塑训练计划</h1>
+    <p class="hero-sub">从「认识身体姿势」到「成果巩固」 · 每天包含放松 → 伸展 → 呼吸 → 灵活 → 激活强化等模块</p>
+    <div class="stats">
+      <div><b>21</b><span>天计划</span></div>
+      <div><b>3</b><span>个阶段</span></div>
+      <div><b>5</b><span>大模块</span></div>
+      <div><b>7</b><span>种装备</span></div>
+    </div>
+    <div class="equip-line">所需装备：滚轴 / 瑜伽砖1对 / 筋膜球 / 花生球 / 阻力带 / 阻力带15磅+25磅（D10–11）/ 毛巾（D7）</div>
+  </div>
+</header>
+
+<div class="navbar">
+  <div class="nav-in">
+    <div class="progress-wrap">
+      <div class="progress"><div id="bar"></div></div>
+      <span id="pcount">0/21</span>
+      <button id="continueBtn">▶ 继续训练</button>
+      <button id="resetBtn">重置进度</button>
+    </div>
+    <div class="days" id="daynav"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="legend">
+    <span class="lg"><i style="background:var(--relax)"></i>筋膜 / 软组织放松</span>
+    <span class="lg"><i style="background:var(--stretch)"></i>软组织伸展</span>
+    <span class="lg"><i style="background:var(--breath)"></i>呼吸引导 / 呼吸训练</span>
+    <span class="lg"><i style="background:var(--joint)"></i>关节灵活 / 脊柱灵活</span>
+    <span class="lg"><i style="background:var(--act)"></i>激活 / 激活强化</span>
+    <span class="lg"><i style="background:var(--tipbg);border:1px solid var(--tipline)"></i>日常技巧</span>
+  </div>
+
+  <div id="weeks"></div>
+</div>
+
+<footer>数据整理自原始训练图册 · DAY 1 与 DAY 21 原文未附「日常技巧」 · 建议在专业人士指导下训练</footer>
+
+<script>
+const DATA=[
+{d:1,t:"认识身体姿势",eq:["滚轴","瑜伽砖1对","筋膜球","花生球"],rows:[
+ ["筋膜组织放松",["枕下肌群","斜角肌","胸锁乳突肌","上斜方肌","胸大肌胸小肌","肩袖肌群","背阔肌"]],
+ ["软组织伸展",["肱骨外旋肌群","肱骨内旋肌","胸大肌胸小肌","背阔肌"]],
+ ["呼吸引导",["仰卧90/90"],"重建横膈膜呼吸功能"]],tip:null},
+{d:2,t:"松解“紧箍咒”-胸椎灵活",eq:["滚轴","瑜伽砖1对","筋膜球","花生球"],rows:[
+ ["筋膜组织放松",["胸椎段","肋骨外侧","背阔肌"]],
+ ["软组织伸展",["胸肌伸展","体侧肌群伸展"]],
+ ["呼吸引导",["仰卧90/90呼吸","侧卧90/90呼吸"]],
+ ["脊柱灵活性",["侧卧翻书","麻花伸展变式","牛猫式","牛猫式扭转"]]],tip:"靠墙站立法"},
+{d:3,t:"打开胸腔-缓解肩背紧张",eq:["滚轴","瑜伽砖1对","花生球"],rows:[
+ ["筋膜组织放松",["胸椎段","肋骨外侧","胸肋区域"]],
+ ["软组织伸展",["胸骨段","腹部肌群","胸肌和背部肌群伸展"]],
+ ["关节灵活",["胸椎段伸展"]],
+ ["呼吸引导",["鳄鱼式呼吸"]],
+ ["激活",["竖脊肌激活"]]],tip:"打开胸腔"},
+{d:4,t:"开肩训练-改善肩胛卡顿",eq:["滚轴","瑜伽砖1对","筋膜球"],rows:[
+ ["筋膜组织放松",["胸小肌","锁骨下肌","三角肌","肩袖肌群"]],
+ ["软组织伸展",["牛面式伸展","穿出伸展","直臂俯卧开肩","胸骨肌伸展"]],
+ ["呼吸引导",["鳄鱼式呼吸"]],
+ ["关节灵活",["胸椎灵活性","肩胛滑动","肩关节灵活性（外旋、内旋、屈、伸）"]]],tip:"“喝水提醒”——每天喝水时做10次肩胛骨后缩"},
+{d:5,t:"肩胛放松-改善头前引",eq:["瑜伽砖1对","筋膜球","花生球","阻力带"],rows:[
+ ["软组织放松",["枕后肌群","斜角肌","胸锁乳突肌","胸小肌"]],
+ ["软组织伸展",["枕后肌群","斜角肌","斜方肌","胸锁乳突肌","胸部肌群"]],
+ ["呼吸引导",["仰卧90/90呼吸"]],
+ ["激活强化",["颈部卷动","颈部控制","肩胛训练"]]],tip:"“收下巴大法”"},
+{d:6,t:"胸腰筋膜释放-体侧打开",eq:["滚轴","筋膜球","花生球"],rows:[
+ ["软组织放松",["背阔肌","腰椎段"]],
+ ["软组织伸展",["背阔肌","腰方肌"]],
+ ["呼吸引导",["侧卧90/90呼吸"]],
+ ["激活强化",["侧卧位支撑","臀桥式"]]],tip:"“睡眠姿势调整”"},
+{d:7,t:"筋膜流动-轻盈背部唤醒",eq:["滚轴","瑜伽砖1对","筋膜球","花生球","毛巾"],rows:[
+ ["软组织放松",["枕后肌群","胸小肌","胸大肌","背阔肌"]],
+ ["软组织伸展",["枕后肌群","胸肌","背阔肌"]],
+ ["呼吸引导",["90/90呼吸"]],
+ ["激活强化",["侧卧翻书","侧卧肩关节绕环","牛面式拉伸","牛猫式","鸟狗式"]]],tip:"“颈部扭动”"},
+{d:8,t:"肌力觉醒-找到背部的肌肉",eq:["滚轴","瑜伽砖1对","筋膜球","花生球","阻力带"],rows:[
+ ["软组织放松",["胸小肌","胸大肌","锁骨下肌","上斜方肌"]],
+ ["软组织伸展",["上斜方肌","胸肌","背阔肌"]],
+ ["关节灵活",["胸椎段伸展"]],
+ ["激活强化",["前锯肌激活","中、下斜方肌","菱形肌"]]],tip:"“肩胛骨回家”"},
+{d:9,t:"核心稳定-身体稳定",eq:["滚轴","瑜伽砖1对"],rows:[
+ ["软组织放松",["背阔肌","胸大肌","胸小肌"]],
+ ["软组织伸展",["牛面式","胸椎伸展","直臂俯卧开肩"]],
+ ["呼吸引导",["仰卧90/90呼吸","仰卧死虫式","鳄鱼式呼吸"]],
+ ["激活强化",["眼镜蛇式","侧板式"]]],tip:"“农夫行走”"},
+{d:10,t:"核心力量训练-背肌强化",eq:["滚轴","瑜伽砖1对","阻力带15磅+25磅"],rows:[
+ ["软组织放松",["肩袖肌群","胸小肌","胸大肌"]],
+ ["软组织伸展",["胸肌","肩前束","背阔肌"]],
+ ["呼吸引导",["鳄鱼式呼吸"]],
+ ["激活强化",["俯卧挺身","YTW","俯卧高拉","弹力带俯身划船"]]],tip:"“墙上天使”"},
+{d:11,t:"身姿挺拔-竖脊肌强化",eq:["滚轴","瑜伽砖1对","阻力带15磅+25磅","花生球","筋膜球"],rows:[
+ ["软组织放松",["枕骨后肌","斜角肌","胸肌"]],
+ ["软组织伸展",["枕后肌群","斜角肌","肩胛下肌","胸肌"]],
+ ["呼吸引导",["鳄鱼式呼吸"]],
+ ["激活强化",["俯卧挺身","YTW","俯卧高位下拉","坐姿划船"]]],tip:"“视线平齐法”"},
+{d:12,t:"前锯肌与核心唤醒",eq:["滚轴","瑜伽砖1对","筋膜球"],rows:[
+ ["软组织放松",["斜角肌","肩胛提肌","上斜方肌"]],
+ ["软组织伸展",["斜角肌","肩胛提肌","上斜方肌"]],
+ ["呼吸引导",["仰卧90/90呼吸"]],
+ ["激活强化",["仰卧手臂斜上伸展","死虫式手臂伸展","单边撑推起","双边撑推起","侧板撑"]]],tip:"“前推后拉”——建立前锯肌和中斜方肌、菱形肌连接"},
+{d:13,t:"后侧斜向肌肉链条激活",eq:["滚轴","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["胸大肌","胸小肌","三角肌","股四头肌","髂胫束"]],
+ ["软组织伸展",["胸肌","肩前束","屈髋肌"]],
+ ["激活强化",["YTW","坐姿拉背","单腿臀桥","单腿臀桥蹬起","鸟狗式"]]],tip:"“单腿平衡”"},
+{d:14,t:"美背力量训练-塑造薄肌",eq:["滚轴","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["胸小肌","胸大肌","背阔肌"]],
+ ["软组织伸展",["胸肌","肩前束","背阔肌"]],
+ ["呼吸引导",["鳄鱼式呼吸"]],
+ ["激活强化",["YTW","锯式","侧板撑拉背","俯卧挺身"]]],tip:"“平衡美人”"},
+{d:15,t:"站姿体态重塑-从足到头",eq:["滚轴","筋膜球","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["小腿后侧","髂胫束","下背部","背阔肌","胸肌"]],
+ ["软组织伸展",["小腿后侧","屈髋肌","背阔肌","胸肌"]],
+ ["呼吸训练",["死虫式单腿交替","单腿蹬起","鸟狗式"]],
+ ["激活强化",["“前脚抬高弓步蹲、前脚抬高弓步扭转”","单边站立拉背"]]],tip:"“重心前后移动”"},
+{d:16,t:"旋转推拉的艺术",eq:["滚轴","筋膜球","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["斜角肌","上斜方肌","胸肌","背阔肌"]],
+ ["软组织伸展",["斜方肌","斜角肌","胸肌","背阔肌"]],
+ ["关节灵活",["侧卧翻书","仰卧腿摆动","四足位转体"]],
+ ["激活强化",["3点式板式支撑","熊爬式","侧跨步转体"]]],tip:"“背包轮换”"},
+{d:17,t:"背部力量进阶-打造线条",eq:["滚轴","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["背阔肌","三角肌","胸肌"]],
+ ["软组织伸展",["背阔肌","胸小肌"]],
+ ["关节灵活",["侧卧翻书","牛猫式"]],
+ ["激活强化",["俯卧YTWL","俯卧挺身","侧板撑后拉"]]],tip:"“伸展懒腰”"},
+{d:18,t:"站姿强化-稳定能力",eq:["滚轴","筋膜球","瑜伽砖1对"],rows:[
+ ["软组织放松",["足底","小腿后侧","小腿前侧","髂胫束","腰大肌"]],
+ ["软组织伸展",["小腿后侧","屈髋肌"]],
+ ["关节灵活",["足部绕环","髋关节灵活"]],
+ ["激活强化",["足弓训练","桥式","单腿站立"]]],tip:"“上台阶臀发力”"},
+{d:19,t:"强化后链-抗阻强化",eq:["滚轴","花生球","瑜伽砖1对"],rows:[
+ ["软组织放松",["枕骨后肌","胸椎段","骶骨段"]],
+ ["软组织伸展",["胸椎段","枕骨后肌群","胸肌","腹肌","屈髋肌"]],
+ ["激活强化",["YTWL","锯式","眼镜蛇式","挺身式"]]],tip:"“手肘支撑”"},
+{d:20,t:"腰椎骨盆髋联合-强健核心",eq:["滚轴","瑜伽砖1对"],rows:[
+ ["软组织放松",["胸肌","背阔肌"]],
+ ["软组织伸展",["胸肌","腹肌","背阔肌"]],
+ ["关节灵活",["脊柱灵活性"]],
+ ["呼吸训练",["死虫式90/90"]],
+ ["激活强化",["军步","转体卷腹","板式支撑变式","YT","眼镜蛇式"]]],tip:"“满坐椅子”"},
+{d:21,t:"成果巩固-未来计划",eq:["滚轴","花生球","筋膜球","瑜伽砖1对","阻力带"],rows:[
+ ["软组织放松",["胸肌","背阔肌"]],
+ ["软组织伸展",["背阔肌","胸肌","胸椎段"]],
+ ["关节灵活",["侧卧翻书","牛猫式"]],
+ ["呼吸训练",["死虫式90/90","死虫式变式"]],
+ ["激活强化",["俯卧挺身","俯卧高拉","YTAO"]]],tip:null}
+];
+
+const WEEKS=[{n:1,title:"第 1 周 · 觉醒与放松",range:"DAY 1–7",desc:"认识身体姿势，松解紧张筋膜，打开胸腔与肩胛",days:[1,2,3,4,5,6,7]},
+{n:2,title:"第 2 周 · 激活与唤醒",range:"DAY 8–14",desc:"找到背部肌肉，建立核心稳定与力量基础",days:[8,9,10,11,12,13,14]},
+{n:3,title:"第 3 周 · 强化与巩固",range:"DAY 15–21",desc:"进阶抗阻训练，重塑站姿体态，巩固成果",days:[15,16,17,18,19,20,21]}];
+
+const CAT={"筋膜组织放松":"relax","软组织放松":"relax","软组织伸展":"stretch","呼吸引导":"breath","呼吸训练":"breath","关节灵活":"joint","脊柱灵活性":"joint","激活":"act","激活强化":"act"};
+
+const KEY="posture21-done";
+let done=new Set();
+try{done=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"))}catch(e){}
+
+const weeksEl=document.getElementById("weeks"),navEl=document.getElementById("daynav");
+
+WEEKS.forEach(w=>{
+  const sec=document.createElement("section");
+  sec.innerHTML=`<div class="week-head"><h2>${w.title}</h2><span>${w.range}</span><small>${w.desc}</small></div>`;
+  w.days.forEach(n=>{
+    const day=DATA[n-1];
+    const rows=day.rows.map(r=>{
+      const[cat,items,note]=r;
+      const chips=items.map(i=>`<span class="it">${i}</span>`).join("");
+      return `<div class="row r-${CAT[cat]}"><div class="cat">${cat}${note?`<small>${note}</small>`:""}</div><div class="items">${chips}</div></div>`;
+    }).join("");
+    const eqs=day.eq.map(e=>`<span class="eq">${e}</span>`).join("");
+    const tip=day.tip?`<div class="tip">💡 <b>日常技巧</b><span>${day.tip}</span></div>`:"";
+    sec.insertAdjacentHTML("beforeend",
+`<article class="card" id="day-${n}">
+  <div class="card-head"><span class="dbadge">DAY ${n}</span><h3>${day.t}</h3><button class="done-btn" data-day="${n}">✓ 完成</button></div>
+  <div class="equip">${eqs}</div>
+  <div class="rows">${rows}</div>
+  ${tip}
+</article>`);
+  });
+  weeksEl.appendChild(sec);
+});
+
+for(let i=1;i<=21;i++){
+  const b=document.createElement("button");
+  b.className="dpill";b.textContent=i;b.dataset.day=i;
+  b.onclick=()=>document.getElementById("day-"+i).scrollIntoView({behavior:"smooth",block:"start"});
+  navEl.appendChild(b);
+}
+
+function refresh(){
+  document.getElementById("bar").style.width=(done.size/21*100)+"%";
+  document.getElementById("pcount").textContent=done.size+"/21";
+  document.querySelectorAll(".card").forEach(c=>c.classList.toggle("done",done.has(+c.dataset?0:+c.id.split("-")[1])));
+  document.querySelectorAll(".dpill").forEach(p=>p.classList.toggle("done",done.has(+p.dataset.day)));
+  try{localStorage.setItem(KEY,JSON.stringify([...done]))}catch(e){}
+}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".done-btn");if(!b)return;
+  const n=+b.dataset.day;
+  done.has(n)?done.delete(n):done.add(n);
+  refresh();
+});
+
+document.getElementById("resetBtn").onclick=()=>{done.clear();refresh();};
+document.getElementById("continueBtn").onclick=()=>{
+  const next=DATA.find(d=>!done.has(d.d));
+  (next?document.getElementById("day-"+next.d):document.getElementById("day-21")).scrollIntoView({behavior:"smooth"});
+};
+
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){
+    document.querySelectorAll(".dpill").forEach(p=>p.classList.toggle("active",+p.dataset.day===+e.target.id.split("-")[1]));
+  }});
+},{rootMargin:"-30% 0px -60% 0px"});
+document.querySelectorAll(".card").forEach(c=>io.observe(c));
+
+refresh();
+</script>
+</body>
+</html>
